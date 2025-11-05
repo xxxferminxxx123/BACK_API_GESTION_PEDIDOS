@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pedido_\Shared\Web\ObtenerPedido\Infraestructura\Adaptador\" />
+    <Folder Include="Pedido_\Shared\Web\ObtenerPedido\Infraestructura\Persistencia\" />
+    <Folder Include="Pedido_\Shared\Web\ObtenerPedido\NewFolder\" />
   </ItemGroup>
 
 </Project>

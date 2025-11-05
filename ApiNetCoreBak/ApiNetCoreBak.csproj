@@ -12,6 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\CasosUso\Web\CancelarPedido\Controller\" />
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\CasosUso\Web\CancelarPedido\Infraestructura\" />
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\CasosUso\Web\ListarPedido\Controller\" />
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\CasosUso\Web\ListarPedido\Infraestructura\" />
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\Shared\CasosUso\Web\ObtenerPedido\Controller\" />
+    <Folder Include="Controllers\Modulos\CoreBak\Pedido\Shared\CasosUso\Web\ObtenerPedido\Infraestructura\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="COREBAK">
       <HintPath>..\..\..\Release\CoreBack\COREBAK.dll</HintPath>
     </Reference>
