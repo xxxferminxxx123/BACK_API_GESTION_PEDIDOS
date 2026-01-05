@@ -8,8 +8,6 @@ namespace COREBAK.Pedido_.CasosUso.Web.CrearPedido.Infraestructura.Persistencia
         : IDelegado
     {
         private readonly IDBAdaptador _dbAdaptador;
-
-        // Constructor recibe la interfaz
         public BaseDatosSQL(IDBAdaptador dbAdaptador)
         {
             _dbAdaptador = dbAdaptador;

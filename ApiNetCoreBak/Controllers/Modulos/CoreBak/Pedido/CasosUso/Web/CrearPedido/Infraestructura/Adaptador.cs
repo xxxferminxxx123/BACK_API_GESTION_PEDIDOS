@@ -24,7 +24,7 @@ namespace ApiNetCoreBak.Controllers.Modulos.CoreBak.Pedido.CasosUso.Web.CrearPed
 
                 return new ObjectResult(new
                 {
-                    success = true,
+                    success = true, 
                     message = "Pedido registrado exitosamente",
                     data = usuario
                 })

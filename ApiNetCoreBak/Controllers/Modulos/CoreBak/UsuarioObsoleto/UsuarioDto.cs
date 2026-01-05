@@ -1,4 +1,4 @@
-﻿namespace ApiNetCoreBak.Controllers.Modulos.CoreBak.Usuario
+﻿namespace ApiNetCoreBak.Controllers.Modulos.CoreBak.UsuarioObsoleto
 {
     public class UsuarioDto
     {

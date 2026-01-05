@@ -1,47 +1,73 @@
-using COREBAK.BDAdapter;
-using COREBAK.JsonAdaptor;
-using COREBAK.Pedido_.CasosUso.Web.CrearPedido.Infraestructura.Adaptador;
-using COREBAK.Pedido_.CasosUso.Web.CrearPedido.Infraestructura.Persistencia;
-using COREBAK.Pedido_.CasosUso.Web.CrearPedido.Infraestructura.Puerto;
+﻿using ApiNetCoreBak.Controllers.Modulos.CoreBak.Rol.CasosUso.Scoped;
+using ApiNetCoreBak.Controllers.Modulos.CoreBak.Usuario.Scoped;
 
-var builder = WebApplication.CreateBuilder(args);
+using COREBAK.Exceptions.Infraestructura.Middleware;
+using COREBAK.Rol_.CasosUso.RegistrarRol_.Infraestructura.Data;
+using COREBAK.Usuario_.CasosUso.RegistrarUsuario_.Infraestructura.Data;
+using Microsoft.EntityFrameworkCore;
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+    // ========== CONFIGURACIÓN DE SERVICIOS ==========
+
+    // 1. Configurar DbContext
+    //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<RolDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 2. Agregar servicios del módulo Usuario
+    //builder.Services.AddUsuarioServices();
+    builder.Services.AddRolServices();
+
+// 3. Servicios de ASP.NET Core
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    builder.Services.AddEndpointsApiExplorer();
 
+    // 4. Configurar Swagger (sin JWT)
+    builder.Services.AddSwaggerGen();
 
-// Adaptadores
-builder.Services.AddSingleton<IJsonAdaptador, JsonAdaptador>();
+    // 5. Configurar CORS
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy
+                .WithOrigins(
+                    "http://localhost:4200",   // Angular
+                    "http://localhost:5173",   // Vite
+                    "http://localhost:8080"    // Vue CLI
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+    });
 
-builder.Services.AddScoped<DBAdaptador>(provider =>
-    new DBAdaptador(connectionString));
+    // ========== CONSTRUCCIÓN DE LA APLICACIÓN ==========
+    var app = builder.Build();
 
-builder.Services.AddScoped<IDBAdaptador>(provider =>
-    provider.GetRequiredService<DBAdaptador>());
+    // ========== CONFIGURACIÓN DEL PIPELINE ==========
 
-builder.Services.AddScoped<IDelegado>(provider =>
-{
-    var dbAdaptador = provider.GetRequiredService<DBAdaptador>();
-    return new BaseDatosSQL(dbAdaptador);
-});
+    // 1. Middleware de manejo de excepciones
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-builder.Services.AddScoped<ICrearPedidoPuerto, CrearPedidoAdaptador>();
+    // 2. Configuración para desarrollo
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-var app = builder.Build();
+    // 3. Middlewares de seguridad y routing
+    app.UseHttpsRedirection();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    // 4. Activar CORS (antes de MapControllers)
+    app.UseCors("AllowFrontend");
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
+    // 5. Mapeo de controladores
+    app.MapControllers();
 
-app.Run();
+    // ========== EJECUCIÓN ==========
+    app.Run();
