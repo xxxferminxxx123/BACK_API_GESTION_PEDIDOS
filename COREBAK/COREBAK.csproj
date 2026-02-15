@@ -19,14 +19,21 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="Twilio" Version="7.14.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Pedido_\Shared\Web\ObtenerPedido\Infraestructura\Adaptador\" />
     <Folder Include="Pedido_\Shared\Web\ObtenerPedido\Infraestructura\Persistencia\" />
     <Folder Include="Pedido_\Shared\Web\ObtenerPedido\NewFolder\" />
+    <Folder Include="Planilla\CasosUso\RegistrarPlanilla_\Dominio\Exceptions\" />
+    <Folder Include="Planilla\Shared\CasosUso\ExistePlanilla\Dominio\Entidad\" />
     <Folder Include="Rol_\CasosUso\RegistarRol_\Dominio\Exceptions\" />
     <Folder Include="Rol_\CasosUso\RegistarRol_\Dominio\ValueObjects\" />
+    <Folder Include="Usuario_\CasosUso\ListarUsuario\Aplicacion\Dto\" />
+    <Folder Include="Usuario_\CasosUso\ListarUsuario\Dominio\Exceptions\" />
+    <Folder Include="Usuario_\CasosUso\ListarUsuario\Dominio\Dto\" />
+    <Folder Include="Usuario_\CasosUso\ListarUsuario\Dominio\ValueObjects\" />
   </ItemGroup>
 
 </Project>

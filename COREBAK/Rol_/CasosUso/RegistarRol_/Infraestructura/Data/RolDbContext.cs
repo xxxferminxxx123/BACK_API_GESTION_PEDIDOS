@@ -21,7 +21,7 @@ namespace COREBAK.Rol_.CasosUso.RegistrarRol_.Infraestructura.Data
                 entity.ToTable("TRC_ROL");
 
                 entity.HasKey(u => u.RolId);
-                entity.Property(u => u.RolId)
+                entity.Property(u => u.RolId)   
                     .HasColumnName("ROL_ID")
                     .IsRequired()
                     .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace COREBAK.Rol_.CasosUso.RegistrarRol_.Infraestructura.Data
 
                 entity.Property(e => e.FechaRegistro)
                     .HasColumnName("FECHA_REGISTRO")
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasColumnType("DATETIME2");
 
                 entity.Property(e => e.UsuarioRegistro)
                     .HasColumnName("USUARIO_REGISTO")

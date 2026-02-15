@@ -1,5 +1,5 @@
-﻿using COREBAK.BDAdapter;
-using COREBAK.JsonAdaptor;
+﻿using COREBAK.Middleware.BDAdapter;
+using COREBAK.Middleware.JsonAdaptor;
 using COREBAK.Pedido_.CasosUso.Web.ListarPedido.Aplicacion;
 using COREBAK.Pedido_.CasosUso.Web.ListarPedido.Aplicacion.Servicio;
 using COREBAK.Pedido_.CasosUso.Web.ListarPedido.Dominio.Delegados;

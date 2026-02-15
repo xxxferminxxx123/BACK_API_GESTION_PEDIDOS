@@ -1,11 +1,13 @@
 ﻿using COREBAK.Rol_.CasosUso.RegistrarRol_.Aplicacion;
 using COREBAK.Rol_.CasosUso.RegistrarRol_.Aplicacion.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiNetCoreBak.Controllers.Modulos.CoreBak.Rol.CasosUso.RegistrarRol.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RegistrarRolController : ControllerBase
     {
         private readonly ServicioAplicacion _registrarRol;

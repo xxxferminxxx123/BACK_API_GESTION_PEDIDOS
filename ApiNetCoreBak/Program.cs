@@ -1,34 +1,50 @@
-﻿using ApiNetCoreBak.Controllers.Modulos.CoreBak.Rol.CasosUso.Scoped;
-using ApiNetCoreBak.Controllers.Modulos.CoreBak.Usuario.Scoped;
-
-using COREBAK.Exceptions.Infraestructura.Middleware;
-using COREBAK.Rol_.CasosUso.RegistrarRol_.Infraestructura.Data;
-using COREBAK.Usuario_.CasosUso.RegistrarUsuario_.Infraestructura.Data;
+﻿using ApiNetCoreBak.Controllers.Modulos.CoreBak.Planilla.Scoped;
+using ApiNetCoreBak.Controllers.Modulos.CoreBak.Rol.CasosUso.Scoped;
+using COREBAK.Middleware.Exceptions.Infraestructura.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-    // ========== CONFIGURACIÓN DE SERVICIOS ==========
+    // Configuración de DbContexts
+    //builder.Services.AddDbContext<RolDbContext>(options => options.UseSqlServer(connectionString));
+    //builder.Services.AddDbContext<ListarUsuarioDbContext>(options =>options.UseSqlServer(connectionString));
 
-    // 1. Configurar DbContext
-    //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddRolServices(connectionString);
+    builder.Services.AddPlanillaServices(connectionString);
 
-builder.Services.AddDbContext<RolDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Agregar servicios del módulo Usuario
-    //builder.Services.AddUsuarioServices();
-    builder.Services.AddRolServices();
-
-// 3. Servicios de ASP.NET Core
-builder.Services.AddControllers();
+    builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
 
-    // 4. Configurar Swagger (sin JWT)
+    //-------------------------------->
+    //-------------------------------->
+    //-------------------------------->
+    //JWTKey-------------------------------->
+
+    string key = "1uCpfKVEM7F7PnMJ1ZQSslduRbf8osyTNQxIkt1T5KI";
+
+    builder.Services.AddAuthorization();
+    builder.Services.AddAuthentication("Bearer").AddJwtBearer(option =>
+    {
+        var signigKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        var signingCredentials = new SigningCredentials(signigKey, SecurityAlgorithms.HmacSha256Signature);
+        option.RequireHttpsMetadata = false;
+        option.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            IssuerSigningKey = signigKey,
+        };
+    });
+    //-------------------------------->
+    //-------------------------------->
+    //-------------------------------->
+
     builder.Services.AddSwaggerGen();
 
-    // 5. Configurar CORS
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowFrontend", policy =>
@@ -45,29 +61,24 @@ builder.Services.AddControllers();
         });
     });
 
-    // ========== CONSTRUCCIÓN DE LA APLICACIÓN ==========
     var app = builder.Build();
 
-    // ========== CONFIGURACIÓN DEL PIPELINE ==========
-
-    // 1. Middleware de manejo de excepciones
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    // 2. Configuración para desarrollo
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
 
-    // 3. Middlewares de seguridad y routing
     app.UseHttpsRedirection();
 
-    // 4. Activar CORS (antes de MapControllers)
     app.UseCors("AllowFrontend");
 
-    // 5. Mapeo de controladores
+    app.UseAuthentication(); // ← IMPORTANTE
+
+    app.UseAuthorization();
+
     app.MapControllers();
 
-    // ========== EJECUCIÓN ==========
     app.Run();

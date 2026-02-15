@@ -1,6 +1,6 @@
-﻿using COREBAK.BDAdapter;
-using COREBAK.Pedido_.Entidad;
+﻿using COREBAK.Pedido_.Entidad;
 using COREBAK.Pedido_.CasosUso.Web.ListarPedido.Dominio.Delegados;
+using COREBAK.Middleware.BDAdapter;
 
 namespace COREBAK.Pedido_.CasosUso.Web.ListarPedido.Infraestructura.Persistencia
 {

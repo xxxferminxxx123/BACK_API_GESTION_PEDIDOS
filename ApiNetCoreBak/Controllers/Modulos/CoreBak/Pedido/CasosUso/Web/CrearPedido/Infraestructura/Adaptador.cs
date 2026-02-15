@@ -1,5 +1,5 @@
 ﻿using ApiNetCoreBak.Controllers.Modulos.CoreBak.Pedido.CasosUso.Web.CrearPedido.Dto;
-using COREBAK.JsonAdaptor;
+using COREBAK.Middleware.JsonAdaptor;
 using COREBAK.Pedido_.CasosUso.Web.CrearPedido.Infraestructura.Puerto;
 using Microsoft.AspNetCore.Mvc;
 
